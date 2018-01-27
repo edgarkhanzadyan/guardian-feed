@@ -1,0 +1,45 @@
+.App {
+  text-align: center;
+}
+
+.postContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.postTitle {
+	font-size: 22px;
+	cursor: pointer;
+}
+
+.postCategory {
+	cursor: pointer;
+	
+}
+
+.postImg {
+	width: 600px;
+	cursor: pointer;
+}
+
+.allPinnedPostContainer {
+	display: flex;
+	flex-direction: row;
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+
+.pinnedPostContainer {
+	border-color: black;
+	border-width: 5px;
+	border-style: solid;
+	min-width: 500px;
+	cursor: pointer;
+	/* width: 500px; */
+}
+
+.pinnedPostImg {
+	width: 300px;
+}
