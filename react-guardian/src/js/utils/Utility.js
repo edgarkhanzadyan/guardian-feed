@@ -2,7 +2,8 @@ import { IMAGE_PLACEHOLDER } from './Constants';
 import uuid from 'uuid/v4';
 
 export const createValidPostObject = post => ({
-	id: post.id,
+  id: post.id,
+  pinned: false,
 	uuid: uuid(),
 	title: post.webTitle,
 	category: post.sectionName,

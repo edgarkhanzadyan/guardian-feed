@@ -1,4 +1,4 @@
-.App {
+.Feed {
   text-align: center;
 }
 
@@ -32,9 +32,7 @@
 }
 
 .pinnedPostContainer {
-	border-color: black;
-	border-width: 5px;
-	border-style: solid;
+	border: 5px solid black;
 	min-width: 500px;
 	cursor: pointer;
 	/* width: 500px; */
