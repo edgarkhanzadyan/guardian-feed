@@ -1,60 +1,46 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
+import Post from './Post';
+import PinnedPost from './PinnedPost';
 // css
 import '../../css/Feed.css';
 // utils
 import { getFeed } from '../utils/Requests';
-import {
-	spawnNotification,
-	createValidNewsArray
-} from '../utils/Utility';
-import { updatePinnedPosts, addPinnedPost } from '../actions/index';
-
-const PostLink = ({children, postId, matchUrl}) => (
-	<Link to={`${matchUrl}post?id=${postId}`}>
-		{children}
-	</Link>
-);
+import { createValidNewsArray, PostLink } from '../utils/Utility';
 
 const Feed = class extends Component {
 
-  state = {
-		news: [],
-		isRefreshing: false,
-		pinnedPosts: []
-  }
-  
 	componentDidMount() {
-		Notification.requestPermission(); // request permission for sending notifications to the browser
-		
-    window.addEventListener('scroll', this.onScrollEnd, false);
+    Notification.requestPermission(); // request permission for sending notifications to the browser
+    const { windowYScrollValue } = this.props;
+		window.scrollTo(0, windowYScrollValue);
+    window.addEventListener('scroll', this.onScroll, false);
     // initial fetch
-    const { news } = this.state;
-    const pageToFetch = Math.floor(news.length / 10) + 1;
-		this.fetchDataFromGuardian({ pageIndex: pageToFetch });
+    if (!this.props.news.length) {
+      this.fetchDataFromGuardian({ pageIndex: 1 });
+    }
 		// fetch news every 30 seconds
-		// setInterval(
-		// 	this.refreshTop,
-		// 	 30 * 1000
-		// );
+		setInterval(
+			this.refreshTop,
+			 30 * 1000
+		);
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('scroll', this.onScrollEnd, false);
+		window.removeEventListener('scroll', this.onScroll, false);
 	}
 	
-	onScrollEnd = () => {
+	onScroll = () => {
+    const { newsAreRefreshing, toggleRefreshing, news } = this.props;
 		if (
 			(window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200) &&
-			!this.props.newsAreRefreshing
+			!newsAreRefreshing
     ) {
-      const { toggleRefreshing, news } = this.props;
       // fetch when scroll gets to the end of the page
       const pageToFetch = Math.floor(news.length / 10) + 1;
 
       this.fetchDataFromGuardian({ pageIndex: pageToFetch });
       toggleRefreshing(true);
-			// this.setState({isRefreshing: true});
     }
 	}
 
@@ -78,42 +64,34 @@ const Feed = class extends Component {
 	}
 
 	togglePinPost = toggledPost => {
-    const { pinnedPosts, removePinnedPost, addPinnedPost } = this.props;
-    if (toggledPost.pinned) {
-      toggledPost.pinned = false;
-      removePinnedPost(toggledPost);
-    } else {
-      toggledPost.pinned = true;
-      addPinnedPost(toggledPost);
-    }
-	}
+    const { togglePinnedPostInNews, removePinnedPost, addPinnedPost } = this.props;
+    toggledPost.pinned ? removePinnedPost(toggledPost) : addPinnedPost(toggledPost);
+    togglePinnedPostInNews(toggledPost);
+  }
 
   render() {
-    const { match, news, pinnedPosts } = this.props;
+    const { match, news, pinnedPosts, setWindowYScroll } = this.props;
+    const onPostLinkClick = () => 
+      setWindowYScroll(window.scrollY);
+
 		const newsUI = news.map(post => (
-			<div className="postContainer" key={post.uuid}>
-				<PostLink matchUrl={match.url} postId={post.id}>
-					<p className="postTitle">{post.title}</p>
-				</PostLink>
-				<p className="postCategory">{post.category}</p>
-				<div>
-					<input type="checkbox" id="coding" onClick={this.togglePinPost.bind(null, post)}/>
-					<label>Pin to the top</label>
-				</div>
-				<PostLink matchUrl={match.url} postId={post.id}>
-					<img src={post.image} className="postImg" alt="postImg"/>
-				</PostLink>
-			</div>
-		));
+      <Post
+        key={post.uuid}
+        post={post}
+        onPostLinkClick={onPostLinkClick}
+        match={match}
+        togglePinPost={this.togglePinPost}
+      />
+    ));
+    
 		// create a horizontal scrollist of pinned news
 		const pinnedPostsUI = pinnedPosts.map(post => (
-			<PostLink matchUrl={match.url} postId={post.id} key={post.id}>
-				<div className="pinnedPostContainer">
-					<p className="pinnedPostTitle">{post.title}</p>
-					<p className="pinnedpPostCategory">{post.category}</p>
-					<img src={post.image} className="pinnedPostImg" alt="pinnedPostImg"/>
-				</div>
-			</PostLink>
+      <PinnedPost
+        key={post.uuid}
+        post={post}
+        onPostLinkClick={onPostLinkClick}
+        match={match}
+      />
 		))
 
     return (

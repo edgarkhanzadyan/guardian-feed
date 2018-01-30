@@ -1,3 +1,5 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { IMAGE_PLACEHOLDER } from './Constants';
 import uuid from 'uuid/v4';
 
@@ -18,3 +20,9 @@ export const spawnNotification = body => {
 	const options = { body };
 	new Notification("New Post", options);
 }
+
+export const PostLink = ({children, postId, matchUrl, onClick}) => (
+  <Link onClick={onClick} to={`${matchUrl}post?id=${postId}`}>
+    {children}
+  </Link>
+);

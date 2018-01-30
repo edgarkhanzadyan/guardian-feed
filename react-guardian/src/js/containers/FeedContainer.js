@@ -4,7 +4,9 @@ import {
   updateNewsFromBelow,
   toggleRefreshing,
   addPinnedPost,
-  removePinnedPost
+  removePinnedPost,
+  setWindowYScroll,
+  togglePinnedPostInNews
 } from '../actions';
 import Feed from '../components/Feed'
 
@@ -16,7 +18,9 @@ const mapDispatchToProps = {
   updateNewsFromBelow,
   toggleRefreshing,
   addPinnedPost,
-  removePinnedPost
+  removePinnedPost,
+  setWindowYScroll,
+  togglePinnedPostInNews
 };
 
 const FeedContainer = connect(

@@ -5,7 +5,9 @@ import {
   UPDATE_NEWS_FROM_ABOVE,
   UPDATE_NEWS_FROM_BELOW,
   ADD_PINNED_POST,
-  REMOVE_PINNED_POST
+  REMOVE_PINNED_POST,
+  SET_WINDOW_Y_SCROLL,
+  TOGGLE_PINNED_POST_IN_NEWS
 } from '../actions';
 
 const pinnedPosts = (state = [], action) => {
@@ -33,7 +35,7 @@ const newsAreRefreshing = (state = false, action) => {
 const news = (state = [], action) => {
   switch (action.type) {
     case UPDATE_NEWS_FROM_ABOVE:
-      const newsToCompare = action.news.slice(0, 10);
+      const newsToCompare = state.slice(0, 10);
       // compare last 10 posts with new fetched posts
       const filteredArray = action.news.filter(newPost => !newsToCompare.some(post => newPost.postDataUrl === post.postDataUrl));
       // spawn notification if there are any new posts
@@ -44,6 +46,19 @@ const news = (state = [], action) => {
       return [...filteredArray, ...state];
     case UPDATE_NEWS_FROM_BELOW:
       return [...state, ...action.news];
+    case TOGGLE_PINNED_POST_IN_NEWS:
+      const postInNews = state.find(post => post.id === action.pinnedPost.id);
+      postInNews.pinned = !postInNews.pinned;
+      return [...state];
+    default:
+      return state;
+  }
+}
+
+const windowYScrollValue = (state = 0, action) => {
+  switch (action.type) {
+    case SET_WINDOW_Y_SCROLL:
+      return action.scrollValue;
     default:
       return state;
   }
@@ -51,6 +66,7 @@ const news = (state = [], action) => {
 const guardianApp = combineReducers({
   news,
   newsAreRefreshing,
-  pinnedPosts
+  pinnedPosts,
+  windowYScrollValue
 });
 export default guardianApp
