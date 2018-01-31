@@ -6,7 +6,7 @@ export const REMOVE_PINNED_POST = 'REMOVE_PINNED_POST';
 export const SET_WINDOW_Y_SCROLL = 'SET_WINDOW_Y_SCROLL';
 export const TOGGLE_PINNED_POST_IN_NEWS = 'TOGGLE_PINNED_POST_IN_NEWS';
 export function toggleRefreshing(newsAreRefreshing) {
-  return { type: TOGGLE_REFRESHING, newsAreRefreshing }
+  return { type: TOGGLE_REFRESHING, newsAreRefreshing };
 }
 
 export function updateNewsFromAbove(news) {

@@ -1,12 +1,10 @@
-import { connect } from 'react-redux'
-import PostPage from '../components/PostPage'
+import { connect } from 'react-redux';
+import PostPage from '../components/PostPage';
 
 const mapStateToProps = state => ({
-  news: state.news
+  news: state.news,
 });
 
-const PostPageContainer = connect(
-  mapStateToProps
-)(PostPage);
+const PostPageContainer = connect(mapStateToProps)(PostPage);
 
-export default PostPageContainer
+export default PostPageContainer;

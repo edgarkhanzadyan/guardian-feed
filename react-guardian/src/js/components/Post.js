@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { PostLink } from '../utils/Utility';
 
-
 const Post = class extends Component {
   constructor(p) {
     super(p);
     this.isPinned = p.isPinned;
   }
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.post.pinned !== this.isPinned) {
       this.isPinned = nextProps.post.pinned;
       return true;
@@ -15,22 +14,27 @@ const Post = class extends Component {
     return false;
   }
   render() {
-    const { post, match, onPostLinkClick, togglePinPost } = this.props;
+    const {
+      post,
+      match,
+      onPostLinkClick,
+      togglePinPost,
+    } = this.props;
     return (
-      <div className="postContainer">
+      <div className='postContainer'>
         <PostLink onClick={onPostLinkClick} matchUrl={match.url} postId={post.id}>
-          <p className="postTitle">{post.title}</p>
+          <p className='postTitle'>{post.title}</p>
         </PostLink>
-        <p className="postCategory">{post.category}</p>
+        <p className='postCategory'>{post.category}</p>
         <div>
-          <input type="checkbox" id="coding" checked={post.pinned} onChange={togglePinPost.bind(null, post)}/>
+          <input type='checkbox' id='coding' checked={post.pinned} onChange={() => togglePinPost(post)} />
           <label>Pin to the top</label>
         </div>
         <PostLink onClick={onPostLinkClick} matchUrl={match.url} postId={post.id}>
-          <img src={post.image} className="postImg" alt="postImg"/>
+          <img src={post.image} className='postImg' alt='postImg' />
         </PostLink>
       </div>
     );
   }
-}
+};
 export default Post;

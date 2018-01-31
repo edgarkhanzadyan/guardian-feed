@@ -1,18 +1,18 @@
-import { createStore } from 'redux'
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import allReducers from '../reducers'
+import allReducers from '../reducers';
 
 const persistConfig = {
   key: 'root',
-  storage: storage,
-}
+  storage,
+};
 
-const persistedReducer = persistReducer(persistConfig, allReducers)
+const persistedReducer = persistReducer(persistConfig, allReducers);
 
 export default () => {
-  let store = createStore(persistedReducer)
-  let persistor = persistStore(store)
-  return { store, persistor }
-}
+  const store = createStore(persistedReducer);
+  const persistor = persistStore(store);
+  return { store, persistor };
+};

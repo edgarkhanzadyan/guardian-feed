@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
-import App from './js/components/App';
-
-import {Provider} from 'react-redux';
-// import {createStore, applyMiddleware} from 'redux';
-// import allReducers from './js/reducers';
-
+// redux
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
+import './css/index.css';
+import App from './js/components/App';
 import configureStore from './js/store/configureStore';
-let { store, persistor } = configureStore();
+
+const { store, persistor } = configureStore();
 // let store = createStore(allReducers);
 store.subscribe(() => console.log(store.getState()));
 
@@ -20,5 +18,5 @@ ReactDOM.render(
       <App />
     </PersistGate>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

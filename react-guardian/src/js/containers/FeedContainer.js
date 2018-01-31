@@ -1,4 +1,4 @@
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import {
   updateNewsFromAbove,
   updateNewsFromBelow,
@@ -6,9 +6,9 @@ import {
   addPinnedPost,
   removePinnedPost,
   setWindowYScroll,
-  togglePinnedPostInNews
+  togglePinnedPostInNews,
 } from '../actions';
-import Feed from '../components/Feed'
+import Feed from '../components/Feed';
 
 // { news, newsAreRefreshing, pinnedPosts }
 const mapStateToProps = state => state;
@@ -20,12 +20,12 @@ const mapDispatchToProps = {
   addPinnedPost,
   removePinnedPost,
   setWindowYScroll,
-  togglePinnedPostInNews
+  togglePinnedPostInNews,
 };
 
 const FeedContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Feed);
 
-export default FeedContainer
+export default FeedContainer;
