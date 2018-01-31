@@ -35,14 +35,14 @@ const newsAreRefreshing = (state = false, action) => {
 const news = (state = [], action) => {
   switch (action.type) {
     case UPDATE_NEWS_FROM_ABOVE:
-      const newsToCompare1 = state.slice(0, 10);
+      const first10news = state.slice(0, 10);
       // compare last 10 posts with new fetched posts
-      const filteredArray1 = action.news.filter(newPost => !newsToCompare1.some(post => newPost.id === post.id));
+      const filteredArray1 = action.news.filter(newPost => !first10news.some(post => newPost.id === post.id));
       console.log(filteredArray1.length);
       return [...filteredArray1, ...state];
     case UPDATE_NEWS_FROM_BELOW:
-      const newsToCompare2 = state.slice(state.length - 10);
-      const filteredArray2 = action.news.filter(newPost => !newsToCompare2.some(post => newPost.id === post.id));
+      const last10news = state.slice(state.length - 10);
+      const filteredArray2 = action.news.filter(newPost => !last10news.some(post => newPost.id === post.id));
       console.log(filteredArray2);
       return [...state, ...filteredArray2];
     case TOGGLE_PINNED_POST_IN_NEWS:

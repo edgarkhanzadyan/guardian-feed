@@ -51,8 +51,9 @@ const Feed = class extends Component {
     const newsArray = createValidNewsArray(jsonedData.response.results);
     // spawn notification if there are any new posts
     const first10news = news.slice(0, 10);
-    if(!first10news.some(post => post.id === newsArray[0].id)) {
-      spawnNotification(newsArray[0].title);
+    const filteredArray = newsArray.filter(newPost => !first10news.some(post => newPost.id === post.id));
+    if(filteredArray.length) {
+      spawnNotification(filteredArray[0].title);
     }
     updateNewsFromAbove(newsArray);
     toggleRefreshing(false);
