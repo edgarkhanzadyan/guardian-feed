@@ -6,7 +6,7 @@ import {
 // css
 import '../../css/Feed.css';
 // components
-import PostPage from './PostPage';
+import PostPageContainer from '../containers/PostPageContainer';
 import FeedContainer from '../containers/FeedContainer';
 
 // component-wrapper for Router
@@ -16,7 +16,7 @@ class App extends Component {
 			<Router>
 				<div>
 					<Route exact path="/" component={FeedContainer}/>
-					<Route path="/post" component={PostPage}/>
+					<Route path="/post" component={PostPageContainer}/>
 				</div>
 			</Router>
 		)

@@ -35,17 +35,16 @@ const newsAreRefreshing = (state = false, action) => {
 const news = (state = [], action) => {
   switch (action.type) {
     case UPDATE_NEWS_FROM_ABOVE:
-      const newsToCompare = state.slice(0, 10);
+      const newsToCompare1 = state.slice(0, 10);
       // compare last 10 posts with new fetched posts
-      const filteredArray = action.news.filter(newPost => !newsToCompare.some(post => newPost.postDataUrl === post.postDataUrl));
-      // spawn notification if there are any new posts
-      // console.log(filteredArray.length);
-      // if (filteredArray.length) {
-      //   spawnNotification(filteredArray[0].title);
-      // }
-      return [...filteredArray, ...state];
+      const filteredArray1 = action.news.filter(newPost => !newsToCompare1.some(post => newPost.id === post.id));
+      console.log(filteredArray1.length);
+      return [...filteredArray1, ...state];
     case UPDATE_NEWS_FROM_BELOW:
-      return [...state, ...action.news];
+      const newsToCompare2 = state.slice(state.length - 10);
+      const filteredArray2 = action.news.filter(newPost => !newsToCompare2.some(post => newPost.id === post.id));
+      console.log(filteredArray2);
+      return [...state, ...filteredArray2];
     case TOGGLE_PINNED_POST_IN_NEWS:
       const postInNews = state.find(post => post.id === action.pinnedPost.id);
       postInNews.pinned = !postInNews.pinned;

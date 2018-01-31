@@ -6,7 +6,7 @@ import PinnedPost from './PinnedPost';
 import '../../css/Feed.css';
 // utils
 import { getFeed } from '../utils/Requests';
-import { createValidNewsArray, PostLink } from '../utils/Utility';
+import { createValidNewsArray, spawnNotification } from '../utils/Utility';
 
 const Feed = class extends Component {
 
@@ -45,10 +45,15 @@ const Feed = class extends Component {
 	}
 
 	refreshTop = async () => {
-    const { updateNewsFromAbove, toggleRefreshing } = this.props;
+    const { updateNewsFromAbove, toggleRefreshing, news } = this.props;
 		const fetchedData = await getFeed({ pageIndex: 1 });
 		const jsonedData = await fetchedData.json();
     const newsArray = createValidNewsArray(jsonedData.response.results);
+    // spawn notification if there are any new posts
+    const first10news = news.slice(0, 10);
+    if(!first10news.some(post => post.id === newsArray[0].id)) {
+      spawnNotification(newsArray[0].title);
+    }
     updateNewsFromAbove(newsArray);
     toggleRefreshing(false);
 	}
@@ -74,6 +79,7 @@ const Feed = class extends Component {
     const onPostLinkClick = () => 
       setWindowYScroll(window.scrollY);
 
+    // create a vertical scrollist of news
 		const newsUI = news.map(post => (
       <Post
         key={post.uuid}
@@ -84,7 +90,7 @@ const Feed = class extends Component {
       />
     ));
     
-		// create a horizontal scrollist of pinned news
+    // create a horizontal scrollist of pinned news
 		const pinnedPostsUI = pinnedPosts.map(post => (
       <PinnedPost
         key={post.uuid}

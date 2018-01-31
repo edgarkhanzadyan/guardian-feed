@@ -2,39 +2,21 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 // css
 import '../../css/PostPage.css';
-// utils
-import {
-	createValidPostObject
-} from '../utils/Utility';
-import { getPostData } from '../utils/Requests';
 
 class PostPage extends Component {
 
-  state = {
-		post: {}
-	}
+  post = {};
 
-	componentDidMount() {
-		this.fetchPostData();
-	}
-
-	fetchPostData = async () => {
-    try {
-      // get vars from url params
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const postId = urlSearchParams.get('id');
-      // get post data from Guardian 
-      const fetchedData = await getPostData({ postId });
-      const {response: { content }} = await fetchedData.json();
-      const post = createValidPostObject(content);
-      this.setState({ post });
-    } catch(e) {
-      console.log(e);
-    }
+	componentWillMount() {
+    const { news } = this.props;
+    // get vars from url params
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const postId = urlSearchParams.get('id');
+    this.post = news.find(p => p.id === postId);
 	}
 
 	render() {
-		const { post } = this.state;
+    const { post } = this;
 		return (
 			<div>
 				<Link to="/">
